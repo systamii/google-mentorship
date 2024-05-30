@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>A D3 map</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 120px;
+      height: 28px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .school-list {
+      position: absolute;
+      left: 750px;  /* Adjust based on your layout */
+      top: 50px;    /* Adjust based on your layout */
+      width: 200px;
+      font: 12px sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>School Districts Map</h1> <!-- Added a header for visibility -->
+
+  <!-- Tooltip element -->
+  <div class="tooltip" id="tooltip"></div>
+  <!-- School list element -->
+  <div class="school-list" id="school-list">
+    <h2>Schools in District</h2>
+    <ul id="school-names"></ul>
+  </div>
+
+  <script>
+    var width = 700,
+        height = 580;
+
+    var svg = d3.select('body')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .style('border', '1px solid black'); // Added border to see the SVG
+
+    var g = svg.append('g');
+
+    var projection = d3.geoMercator() // Using Mercator for simplicity
+      .scale(1)
+      .translate([0, 0]);
+
+    var geoPath = d3.geoPath()
+        .projection(projection);
+
+    var tooltip = d3.select("#tooltip");
+
+    var schools = [];  // Define the schools array in the outer scope
+
+    // Function to update the school list
+    function updateSchoolList(schools) {
+      var ul = d3.select("#school-names").html("");
+      schools.forEach(function(school) {
+        ul.append("li").text(school.name);
+      });
+    }
+
+    // Load the GeoJSON data and draw the map
+    d3.json('school_districts.geojson', function(error, districtData) {
+      if (error) throw error;
+
+      // Calculate the bounds of the geojson
+      var bounds = geoPath.bounds(districtData);
+      var scale = 0.95 / Math.max((bounds[1][0] - bounds[0][0]) / width, (bounds[1][1] - bounds[0][1]) / height);
+      var translate = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
+
+      // Update the projection to use computed scale and translate
+      projection
+        .scale(scale)
+        .translate(translate);
+
+      var paths = g.selectAll('path')
+        .data(districtData.features)
+        .enter()
+        .append('path')
+        .attr('fill', '#ccc')
+        .attr('stroke', '#333')  // Added stroke to make the paths visible
+        .attr('d', geoPath)
+        .on('mouseover', function(d) {
+          d3.select(this).attr('fill', 'orange'); // Highlight the district
+          tooltip.style('visibility', 'visible')
+                 .text("District: " + d.properties.school_dist);
+        })
+        .on('mousemove', function(d) {
+          tooltip.style('top', (d3.event.pageY - 10) + 'px')
+                 .style('left', (d3.event.pageX + 10) + 'px');
+        })
+        .on('mouseout', function(d) {
+          d3.select(this).attr('fill', '#ccc'); // Remove highlight
+          tooltip.style('visibility', 'hidden');
+        })
+        .on('click', function(d) {
+          // Show the list of schools in the district
+          var districtSchools = schools.filter(school => school.district === d.properties.school_dist);
+          console.log("Schools in District:", districtSchools); // Log the district schools
+          updateSchoolList(districtSchools);
+        });
+
+      console.log(paths); // Log the paths to ensure they are being created
+
+      // Fetch all school data from the API
+      fetchAllSchoolData(function(schoolData) {
+        schools = schoolData.map(function(d) {
+          return {
+            name: d.school_name,
+            lat: +d.latitude,
+            lon: +d.longitude,
+            district: null  // We'll determine the district later
+          };
+        });
+
+        console.log("Fetched Schools:", schools); // Log fetched school data
+
+        // Assign each school to a district
+        schools.forEach(function(school) {
+          districtData.features.forEach(function(district) {
+            if (d3.geoContains(district, [school.lon, school.lat])) {
+              school.district = district.properties.school_dist;
+            }
+          });
+        });
+
+        console.log("Schools with districts:", schools); // Log schools with assigned districts
+      });
+
+    });
+
+    // Function to fetch all school data
+    function fetchAllSchoolData(callback) {
+      var limit = 50000; // Set limit to max available rows
+      var offset = 0;
+      var allData = [];
+
+      function fetchData() {
+        var url = `https://data.cityofnewyork.us/resource/wg9x-4ke6.json?$limit=${limit}&$offset=${offset}`;
+        d3.json(url, function(error, data) {
+          if (error) throw error;
+
+          if (data.length > 0) {
+            allData = allData.concat(data);
+            offset += limit;
+            fetchData(); // Recursively fetch the next set of data
+          } else {
+            callback(allData); // Call the callback function with all data
+          }
+        });
+      }
+
+      fetchData(); // Initial fetch call
+    }
+
+  </script>
+</body>
+</html>

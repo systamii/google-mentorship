@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>A D3 map</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 120px;
+      height: 28px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>School Districts Map</h1> 
+
+  <!-- Tooltip element -->
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    var width = 700,
+        height = 580;
+
+    var svg = d3.select('body')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .style('border', '1px solid black'); // Added border to see the SVG
+
+    var g = svg.append('g');
+
+    var projection = d3.geoMercator() 
+      .scale(1)
+      .translate([0, 0]);
+
+    var geoPath = d3.geoPath()
+        .projection(projection);
+
+    // Key Value pairs with district and random scale number
+    var districtValues = {
+      1: 20, 2: 50, 3: 75, 4: 10, 5: 90, 6: 40, 7: 60, 8: 30, 9: 80, 10: 25,
+      11: 55, 12: 65, 13: 35, 14: 85, 15: 15, 16: 45, 17: 70, 18: 95, 19: 50,
+      20: 60, 21: 30, 22: 20, 23: 70, 24: 85, 25: 15, 26: 45, 27: 70, 28: 95,
+      29: 60, 30: 25, 31: 90
+    };
+
+    // Define a color scale
+    var colorScale = d3.scaleLinear()
+      .domain([0, 100])
+      .range(["darkred", "lightblue"]);
+
+    // Load the GeoJSON data and draw the map
+    d3.json('school_districts.geojson', function(error, data) {
+      if (error) throw error;
+
+      // Log the data to ensure it's being loaded
+      console.log("GeoJSON Data:", data);
+
+      // Calculate the bounds of the geojson
+      var bounds = geoPath.bounds(data);
+      var scale = 0.95 / Math.max((bounds[1][0] - bounds[0][0]) / width, (bounds[1][1] - bounds[0][1]) / height);
+      var translate = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
+
+      // Update the projection to use computed scale and translate
+      projection
+        .scale(scale)
+        .translate(translate);
+
+      console.log("Bounds:", bounds);
+      console.log("Scale:", scale);
+      console.log("Translate:", translate);
+
+      var tooltip = d3.select("#tooltip");
+
+      var paths = g.selectAll('path')
+        .data(data.features)
+        .enter()
+        .append('path')
+        .attr('fill', function(d) {
+          var district = +d.properties.school_dist;
+          var value = districtValues[district] || 0;
+          return colorScale(value);
+        })
+        .attr('stroke', '#333')  // Added stroke to make the paths visible
+        .attr('d', geoPath)
+        .on('mouseover', function(d) {
+          d3.select(this).attr('fill', 'orange'); // Highlight the district
+          tooltip.style('visibility', 'visible')
+                 .text("District: " + d.properties.school_dist);
+        })
+        .on('mousemove', function(d) {
+          tooltip.style('top', (d3.event.pageY - 10) + 'px')
+                 .style('left', (d3.event.pageX + 10) + 'px');
+        })
+        .on('mouseout', function(d) {
+          var district = +d.properties.school_dist;
+          var value = districtValues[district] || 0;
+          d3.select(this).attr('fill', colorScale(value)); // Restore original color
+          tooltip.style('visibility', 'hidden');
+        });
+
+      console.log(paths); // Log the paths to ensure they are being created
+
+      // Log individual feature coordinates for debugging
+      data.features.forEach(function(feature, index) {
+        console.log("Feature " + index + ":", feature.geometry.coordinates);
+      });
+
+      console.log("Map has been drawn."); // Confirmation log
+    });
+
+  </script>
+</body>
+</html>

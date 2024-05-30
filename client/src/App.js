@@ -1,9 +1,15 @@
 import React, { Fragment } from "react";
 import './App.css';
 
+
+//Components
+import TestEndpoint from "./components/TestEndpoint";
+
 function App() {
   return (
-    <Fragment></Fragment>
+    <Fragment>
+      <TestEndpoint />
+    </Fragment>
   );
 }
 

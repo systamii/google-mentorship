@@ -1,11 +1,11 @@
 .main-content {
-    width: 80%;
+    min-height:100vh;
+    min-width:100vh;
     padding: 20px;
     background-color: #f8f8f8;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Add this line */
     color: black; /* Ensure text color is black */
   }
   

@@ -5,7 +5,7 @@ const Homepage = () => {
   return (
     <div className="app-container">
       <Sidebar />
-      <MainContent />
+      <MainContent/>
     </div>
   );
 };

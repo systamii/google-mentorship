@@ -14,11 +14,11 @@ function Welcome() {
                 <input type="text" placeholder="Press Enter..."></input>
                 <button><img src="src/components/images/search-icon.svg"></img></button>
             </div>
-            <div className="hmb-wrapper">
+            <div className="btn-wrapper">
                 <div className="heatmap-button">
                     <a href="/heatmap"><button>View the Heatmap here!</button></a>
                 </div>
-                <div className="heatmap-button">
+                <div className="homepage-button">
                     <a href="/home"><button>Travel to the homepage here!</button></a>
                 </div>
             </div>

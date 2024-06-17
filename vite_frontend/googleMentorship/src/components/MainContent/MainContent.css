@@ -14,7 +14,8 @@
     justify-content: space-between;
     color: black; /* Ensure text color is black */
   }
-  
+
+
   .overview, .additional-info {
     margin: 20px 0;
     padding: 10px;
@@ -42,3 +43,7 @@
     color: #2a9d8f;
   }
   
+.graph-bars{
+    width:50px;
+    color: #2a9d8f;
+}

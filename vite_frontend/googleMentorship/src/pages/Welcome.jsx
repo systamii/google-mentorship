@@ -1,5 +1,4 @@
 import React from 'react';
-
 function Welcome() {
   return (
     <div className="container">
@@ -17,7 +16,10 @@ function Welcome() {
             </div>
             <div className="hmb-wrapper">
                 <div className="heatmap-button">
-                    <button>View the Heatmap here!</button>
+                    <a href="/heatmap"><button>View the Heatmap here!</button></a>
+                </div>
+                <div className="heatmap-button">
+                    <a href="/home"><button>Travel to the homepage here!</button></a>
                 </div>
             </div>
         </div>

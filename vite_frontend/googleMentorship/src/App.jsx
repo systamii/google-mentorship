@@ -1,10 +1,19 @@
 import React from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css';
-import { Welcome } from './components';
+import { Welcome, Homepage, HeatmapPage } from './pages';
 
 function App() {
   return (
-    <Welcome />
+    <div>
+      <BrowserRouter>
+      <Routes>
+        <Route index element={<Welcome />}/>
+        <Route path="/home" element={<Homepage />}/>
+        <Route path="/heatmap" element={<HeatmapPage />} />
+      </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

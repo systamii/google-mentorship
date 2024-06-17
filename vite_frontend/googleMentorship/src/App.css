@@ -1,7 +1,14 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app-container {
+  display: flex;
+  height: 100%; /* Add this line to ensure it takes the full height */
+  width: 100%;
 }
 
 body {
@@ -92,4 +99,3 @@ body {
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-

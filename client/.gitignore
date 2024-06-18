@@ -1,23 +1,60 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Node.js
 /node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/pnp.js
+.pnp
+.env
+.env.test
+.env.production
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
+# Miscellaneous
+.DS_Store
+
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+lerna-debug.log*
+
+# Dependency directories
+jspm_packages/
+typings/
+
+# Build directories
+build/
+dist/
+coverage/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional npm cache directory
+.npm
+
+# Parcel-bundler cache (https://parceljs.org/)
+.cache
+
+# Next.js build output
+.next
+
+# Gatsby files
+.cache/
+public
+
+# macOS files
+*.DS_Store
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+*.stackdump
+*.stackdump

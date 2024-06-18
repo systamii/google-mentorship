@@ -4,15 +4,19 @@ import Buttons from '../components/Intro/Buttons';
 import Hero from '../components/Hero/Hero';
 import StatsSection from '../components/Stats/StatsSection';
 import ResourcesSection from '../components/Resources/ResourcesSection';
+import AboutSection from '../components/About/AboutSection';
 
 function Welcome() {
   return (
     <div className="app-container">
+      
       <div className="section">
         <Introduction />
         <Buttons />
       </div>
+
       <Hero />
+
       <StatsSection
         heading="Graduation Rate Disparity Between Wealthy and Poor Districts"
         content="In New York State, the gap in graduation rates between the wealthiest and poorest school
@@ -35,7 +39,10 @@ function Welcome() {
         imageUrl="src/components/images/remotelearning.jpeg"
         imagePosition="right"
       />
+
       <ResourcesSection />
+
+      <AboutSection />
     </div>
   );
 }

@@ -1,28 +1,48 @@
 import React from 'react';
+import Introduction from '../components/Intro/Introduction';
+import Buttons from '../components/Intro/Buttons';
+import Hero from '../components/Hero/Hero';
+import StatsSection from '../components/Stats/StatsSection';
+import ResourcesSection from '../components/Resources/ResourcesSection';
+import AboutSection from '../components/About/AboutSection';
+
 function Welcome() {
   return (
-    <div className="container">
-        <div className="left-panel">
-            <div className="illustration">
-                <img id="people" src="src/components/images/illustration.png"></img>
-            </div>
-            <h1>City Learn: Explore Educational Data</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. DExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
-        <div className="right-panel">
-            <div className="search-bar">
-                <input type="text" placeholder="Press Enter..."></input>
-                <button><img src="src/components/images/search-icon.svg"></img></button>
-            </div>
-            <div className="btn-wrapper">
-                <div className="heatmap-button">
-                    <a href="/heatmap"><button>View the Heatmap here!</button></a>
-                </div>
-                <div className="homepage-button">
-                    <a href="/home"><button>Travel to the homepage here!</button></a>
-                </div>
-            </div>
-        </div>
+    <div className="app-container">
+      
+      <div className="section">
+        <Introduction />
+        <Buttons />
+      </div>
+
+      <Hero />
+
+      <StatsSection
+        heading="Graduation Rate Disparity Between Wealthy and Poor Districts"
+        content="In New York State, the gap in graduation rates between the wealthiest and poorest school
+        districts has consistently been between 25% and 27%. This stark difference highlights the
+        impact of educational funding inequality, with wealthier districts able to provide more
+        resources and support for their students, leading to higher graduation rates and better
+        overall outcomes."
+        imageUrl="src/components/images/richdistrict.webp"
+        imagePosition="right"
+      />
+      <StatsSection
+        heading="Racial Disparities in NYC Public School Teacher Workforce"
+        content="According to data from 2020, the New York City public school teacher workforce skews White: 55% of teachers are White, 18% are Black, and 14% are Hispanic. This significant disparity is crucial because teachers' racial biases can influence their expectations for students, the quality of their teaching, and the decisions they make in managing their classrooms. Addressing this disparity is essential to ensure a fair and inclusive educational environment for all students."
+        imageUrl="src/components/images/teacherdiversity.webp"
+        imagePosition="left"
+      />
+      <StatsSection
+        heading="Digital Divide Among NYC Students"
+        content="During the pandemic, a student in a majority Black or Brown school district was four times more likely to have inadequate or no internet than a student in a majority white school district, and three times more likely to not have a dedicated device."
+        imageUrl="src/components/images/remotelearning.jpeg"
+        imagePosition="right"
+      />
+
+      <ResourcesSection />
+
+      <AboutSection />
     </div>
   );
 }

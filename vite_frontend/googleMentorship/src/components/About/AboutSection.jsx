@@ -50,6 +50,9 @@ const AboutSection = () => {
             <a href="mailto:jchandleriii40@stuy.edu">
               <img src="src/components/images/email.svg" alt="Email Icon" />
             </a>
+            <a href="https://www.linkedin.com/in/john-chandler-40937321a/">
+              <img src="src/components/images/linkedin.svg" alt="LinkedIn Icon" />
+            </a>
           </div>
         </div>
       </div>
